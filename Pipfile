@@ -9,6 +9,7 @@ aiohttp = "*"
 asyncio = "*"
 uvloop = "*"
 aioreloader = "*"
+pyyaml = "*"
 
 [dev-packages]
 autopep8 = "*"
