@@ -10,9 +10,16 @@ asyncio = "*"
 uvloop = "*"
 aioreloader = "*"
 pyyaml = "*"
+aioredis = "*"
+cryptography = "*"
+multidict = "*"
 
 [dev-packages]
 autopep8 = "*"
 
 [requires]
 python_version = "3.7"
+
+[packages.aiohttp-security]
+version = "*"
+extras = [ "session",]
