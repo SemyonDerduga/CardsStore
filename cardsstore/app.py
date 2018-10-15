@@ -10,10 +10,11 @@ from aiohttp_session import setup as setup_session
 from aiohttp_security import SessionIdentityPolicy
 from aiohttp_security import setup as setup_security
 from authz import DictionaryAuthorizationPolicy
-from users import user_map
+import json
+
 async def create_app(config: dict):
     app = web.Application()
-    app.user_map = user_map
+    
 
     app['config'] = config
     aiohttp_jinja2.setup(
@@ -31,16 +32,30 @@ async def create_app(config: dict):
     setup_session(app, storage)
 
     policy = SessionIdentityPolicy()
-    setup_security(app, policy, DictionaryAuthorizationPolicy(user_map))
-
+    app['db'] = await aioredis.create_pool(config['database_uri'])
+    setup_security(app, policy, DictionaryAuthorizationPolicy(app['db']))
     app.on_startup.append(on_start)
+    
     app.on_cleanup.append(on_shutdown)
 
     return app
 
+def update_user(app, name, password, balance, cards):
+    app['db'].execute('set', 'User:'+name+':password', password)
+    app['db'].execute('set', 'User:'+name+':balance', balance)
+    app['db'].execute('set', 'User:'+name+':cards', json.dumps(cards))
+    
+
 async def on_start(app):
-    config = app['config']
-    app['db'] = await aioredis.create_pool(config['database_uri'])
+    pass
+    #config = app['config']
+    #update_user(app,'Jack','1',228,['python','cobra'])
+    #update_user(app,'Sam','1213',1488,['python','cobra'])
+
+
+
+
+    
 
 async def on_shutdown(app):
     await app['db'].close()

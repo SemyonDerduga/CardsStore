@@ -1,6 +1,6 @@
 import aiohttp
 from aiohttp_jinja2 import template
-
+import urllib
 
 from textwrap import dedent
 
@@ -13,30 +13,6 @@ from aiohttp_security import (
 
 from authz import check_credentials
 
-# @template('index.html')
-# async def index(request):
-#    await request.app['db'].execute('set', 'UserName', 'Sam')
-#    name = await request.app['db'].execute('get', 'UserName')
-#    name = name.decode("utf-8")
-#    site_name = request.app['config'].get('site_name')
-#    return {'site_name':site_name,'name':name}
-
-
-# index_template = dedent("""
-#    <!doctype html>
-#        <head></head>
-#        <body>
-#            <p>{message}</p>
-#            <form action="/login" method="post">
-#                Login:
-#                <input type="text" name="username">
-#                Password:
-#                <input type="password" name="password">
-#                <input type="submit" value="Login">
-#            </form>
-#            <a href="/logout">Logout</a>
-#        </body>
-# """)
 
 @template('login.html')
 async def index(request):
@@ -56,9 +32,10 @@ async def login(request):
     form = await request.post()
     username = form.get('username')
     password = form.get('password')
-    # return {'message':(username+' '+password)}
+    
     verified = await check_credentials(
-        request.app.user_map, username, password)
+        request.app['db'], username, password)
+    
     if verified:
         await remember(request, response, username)
         response = web.HTTPFound('/search')
@@ -71,9 +48,12 @@ async def search_page(request):
     username = await authorized_userid(request)
     
     if username:
-        balance = list(request.app.user_map[username])[2]
+        
+        balance = await request.app['db'].execute('get', 'User:'+username+':balance')
+        balance = balance.decode("utf-8")
         message = 'Hello, {username}! \n Balance: {balance}'.format(
             username=username, balance=balance)
+        
         return {'message': message}
     else:
         response = web.HTTPFound('/')
@@ -86,15 +66,37 @@ async def logout(request):
     message = 'You have been logged out\nYou need to login'
     return {'message': message}
 
+from ..cards import Сards
+import asyncio
+
 @template('card.html')
 async def card_view_page(request):
     username = await authorized_userid(request)
     
     if username:
-        balance = list(request.app.user_map[username])[2]
-        message = 'Hello, {username}! \n Balance: {balance}'.format(
-            username=username, balance=balance)
-        return {'message': message}
+        CardsGetter = Сards(request.app)
+        cardname = request.rel_url.query['search_request']
+        
+        card_path = await asyncio.ensure_future(CardsGetter.get_card(cardname))
+        is_owner = await asyncio.ensure_future(CardsGetter.is_owner(username = username, cardname = cardname))
+
+        message = 'Hello, {username}!'.format(username=username)
+        
+        
+        if card_path:
+            if not is_owner:
+                message += 'Карта '+cardname+' куплена'
+                await asyncio.ensure_future(CardsGetter.buy_card(username = username, cardname = cardname))
+                
+                
+        else:
+            message += 'Такой карты не существует'
+        balance = await request.app['db'].execute('get', 'User:'+username+':balance')
+        balance = int(balance.decode("utf-8"))
+        message += ' Balance: {balance}'.format(balance=balance)
+        return {'message': message, 'path':urllib.parse.quote('file://'+card_path.decode("utf-8")), 'cardname':cardname}
     else:
         response = web.HTTPFound('/')
         return response
+
+

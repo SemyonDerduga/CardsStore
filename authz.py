@@ -1,34 +1,39 @@
 from aiohttp_security.abc import AbstractAuthorizationPolicy
+import json
 
 
 class DictionaryAuthorizationPolicy(AbstractAuthorizationPolicy):
     def __init__(self, user_map):
         super().__init__()
         self.user_map = user_map
+    
 
     async def authorized_userid(self, identity):
         """Retrieve authorized user id.
         Return the user_id of the user identified by the identity
         or 'None' if no user exists related to the identity.
         """
-        if identity in self.user_map:
+        
+        exsist = await self.user_map.execute('get', str('User:'+identity+':password'))
+        if exsist:
             return identity
-
+        return None
+        
     async def permits(self, identity, permission, context=None):
         """Check user permissions.
         Return True if the identity is allowed the permission in the
         current context, else return False.
         """
-        # pylint: disable=unused-argument
-        user = self.user_map.get(identity)
-        if not user:
-            return False
-        return permission in user.permissions
+       
+        return "Truefdddf"
+   
 
 
-async def check_credentials(user_map, username, password):
-    user = user_map.get(username)
-    if not user:
+async def check_credentials(db, username, password):
+    user_password = await db.execute('get', str('User:'+username+':password'))
+    
+    
+    if not user_password:
         return False
-
-    return user.password == password
+    user_password = user_password.decode("utf-8")
+    return user_password == password

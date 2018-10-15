@@ -13,6 +13,9 @@ pyyaml = "*"
 aioredis = "*"
 cryptography = "*"
 multidict = "*"
+requests = "*"
+aiofiles = "*"
+tqdm = "*"
 
 [dev-packages]
 autopep8 = "*"
