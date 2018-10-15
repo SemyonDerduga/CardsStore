@@ -49,8 +49,9 @@ def update_user(app, name, password, balance, cards):
 async def on_start(app):
     pass
     #config = app['config']
-    #update_user(app,'Jack','1',228,['python','cobra'])
-    #update_user(app,'Sam','1213',1488,['python','cobra'])
+    update_user(app,'Jack','1',300,['python','cobra'])
+    update_user(app,'Sam','1213',1500,['python','cobra'])
+    update_user(app,'Test','Test',300,[])
 
 
 

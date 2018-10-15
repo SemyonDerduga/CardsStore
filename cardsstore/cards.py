@@ -26,7 +26,7 @@ class Сards():
                                         async with session.get(image_url) as response:
                                                 if response.status == 200:
                                                         path = self.app['config']['path_images']
-                                                        final_path = path+name+'.jpg'
+                                                        final_path = path+name.lower()+'.jpg'
                                                         f = await aiofiles.open(final_path, mode='wb')
                                                         await f.write(await response.read())
                                                         await f.close()
@@ -44,7 +44,7 @@ class Сards():
                 if card:
                         return card
                 else:
-                        card = await self.download_card(name)
+                        card = await self.download_card(name.lower())
                         
                         if card:
                                 self.app['db'].execute('set', 'Card:'+name.lower()+':path', card.lower())
@@ -64,18 +64,18 @@ class Сards():
 
         async def buy_card(self, cardname, username):
                 """Add card to user and balance decrement"""
+                balance = await self.app['db'].execute('get', 'User:'+username+':balance')
+                balance = int(balance.decode("utf-8"))
+                if balance-50 < 0:
+                        return None
+                balance -= 50 
+                self.app['db'].execute('set', 'User:'+username+':balance', balance)
 
                 cards = await self.app['db'].execute('get', 'User:'+username+':cards')
                 cards = json.loads(cards)
                 cards.append(cardname.lower())
                 await self.app['db'].execute('set', 'User:'+username+':cards', json.dumps(cards))
-
-                balance = await self.app['db'].execute('get', 'User:'+username+':balance')
-                balance = int(balance.decode("utf-8"))
-                balance -= 50 
-                self.app['db'].execute('set', 'User:'+username+':balance', balance)
-                
-
+                return True
 
 
 #names = get_cards_names()

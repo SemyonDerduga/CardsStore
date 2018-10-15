@@ -22,7 +22,7 @@ async def index(request):
         response = web.HTTPFound('/search')
         return response
     else:
-        message = 'You need to login'
+        message = 'Вам нужно войти'
         return {'message': message}
 
 
@@ -41,7 +41,7 @@ async def login(request):
         response = web.HTTPFound('/search')
         return response
 
-    return {'message': 'Invalid username / password combination'}
+    return {'message': 'Неправильныйая комбинация  \n  логина и пароля'}
 
 @template('search.html')
 async def search_page(request):
@@ -51,7 +51,7 @@ async def search_page(request):
         
         balance = await request.app['db'].execute('get', 'User:'+username+':balance')
         balance = balance.decode("utf-8")
-        message = 'Hello, {username}! \n Balance: {balance}'.format(
+        message = 'Привет, {username}!  \n  Ваш счет: {balance}'.format(
             username=username, balance=balance)
         
         return {'message': message}
@@ -63,7 +63,7 @@ async def search_page(request):
 async def logout(request):
     response = web.Response()
     await forget(request, response)
-    message = 'You have been logged out\nYou need to login'
+    message = 'Вы вышли   \n  Для продолжения вам нужно войти'
     return {'message': message}
 
 from ..cards import Сards
@@ -80,21 +80,28 @@ async def card_view_page(request):
         card_path = await asyncio.ensure_future(CardsGetter.get_card(cardname))
         is_owner = await asyncio.ensure_future(CardsGetter.is_owner(username = username, cardname = cardname))
 
-        message = 'Hello, {username}!'.format(username=username)
+        message = 'Привет, {username}!  \n  '.format(username=username)
         
         
         if card_path:
             if not is_owner:
-                message += 'Карта '+cardname+' куплена'
-                await asyncio.ensure_future(CardsGetter.buy_card(username = username, cardname = cardname))
                 
-                
+                buy = await asyncio.ensure_future(CardsGetter.buy_card(username = username, cardname = cardname))
+                if buy:
+                    message += 'Карта '+cardname+' куплена'
+                else:
+                    message += 'На вашем счету недостаточно средств!'
+                    cardname = 'notfound'
+
+
+        
         else:
+            cardname = 'notfound'
             message += 'Такой карты не существует'
         balance = await request.app['db'].execute('get', 'User:'+username+':balance')
         balance = int(balance.decode("utf-8"))
         message += ' Balance: {balance}'.format(balance=balance)
-        return {'message': message, 'path':urllib.parse.quote('file://'+card_path.decode("utf-8")), 'cardname':cardname}
+        return {'message': message, 'path':'http://derdu.ga/cards/'+cardname.lower()+'.jpg', 'cardname':cardname}
     else:
         response = web.HTTPFound('/')
         return response

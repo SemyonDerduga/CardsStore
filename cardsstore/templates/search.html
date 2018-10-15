@@ -6,39 +6,75 @@
 
 
 <html>
-  <head>
 
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-  </head>
+<head>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+
 <body id="LoginForm">
-<div class="container">
-<h1 class="form-heading">{{message}}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1 class="form-heading">
 
-<div class="login-form">
-<div class="main-div">
-    <div class="panel">
-   <h2>Cards Search</h2>
-   <p>Please enter card's name</p>
-   </div>
-    <form id="Search" action="/card" method="get">
+                    {% for line in message.splitlines() %}
+    {{line}}<br>
+{% endfor %}
 
-        <div class="form-group">
+</h1>
+            </div>
+            <div class="col-sm">
+                <div class="login-form">
+                    <div class="main-div">
+                        <div class="panel">
+                            <h2>Cards Search</h2>
+                            <p>Please enter card's name</p>
+                        </div>
+                        <form id="Search" action="/card" method="get">
 
-            
-            <input type="text" class="form-control" id="Search" placeholder="Card's name" name="search_request">
+                            <div class="form-group">
 
+
+                                <input type="text" class="form-control" id="Search" placeholder="Card's name" name="search_request">
+
+                            </div>
+                            <div class="form-group">
+
+
+                                <button type="submit" class="btn btn-primary" value="Search">Search</button>
+
+                            </div>
+                            
+                                </form>
+
+                                <form action="/logout">
+                                    <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" >Logout</button>
+                                    </div>
+                                </form>
+
+                                    
+                                        
+                                    
+                                
+                            
+
+                        
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm"></div>
         </div>
 
-        <button type="submit" class="btn btn-primary" value="Search" >Search</button>
-
-    </form>
     </div>
 
-</div></div></div>
 
 
 </body>
+
 </html>
