@@ -3,3 +3,4 @@
 site_name: 'Cards Store'
 database_uri: redis://localhost:6379
 path_images: '/home/semyon/Site/cards/'
+request_coast: 50
