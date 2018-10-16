@@ -1,6 +1,6 @@
 from aiohttp_security.abc import AbstractAuthorizationPolicy
 import json
-
+import bcrypt
 
 class DictionaryAuthorizationPolicy(AbstractAuthorizationPolicy):
     def __init__(self, user_map):
@@ -35,5 +35,6 @@ async def check_credentials(db, username, password):
     
     if not user_password:
         return False
-    user_password = user_password.decode("utf-8")
-    return user_password == password
+    #user_password = user_password.decode("utf-8")
+    
+    return bcrypt.checkpw(password.encode('utf-8'), user_password)

@@ -1,14 +1,13 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" type="text/css" href="http://derdu.ga/index.css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
 <!------ Include the above in your HEAD tag ---------->
 
 
 <html>
 
 <head>
-
+    <meta name="viewport" content="width=device-width">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -16,9 +15,9 @@
 </head>
 
 <body id="LoginForm">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-md-4 col-sm-12">
                 <h1 class="form-heading">
 
                     {% for line in message.splitlines() %}
@@ -27,25 +26,25 @@
 
 </h1>
             </div>
-            <div class="col-sm">
+            <div class="col-md-4 col-sm-12">
                 <div class="login-form">
                     <div class="main-div">
                         <div class="panel">
-                            <h2>Cards Search</h2>
-                            <p>Please enter card's name</p>
+                            <h2>Поиск карт</h2>
+                            <p>Введите название карты</p>
                         </div>
                         <form id="Search" action="/card" method="get">
 
                             <div class="form-group">
 
 
-                                <input type="text" class="form-control" id="Search" placeholder="Card's name" name="search_request">
+                                <input type="text" class="form-control" id="Search" placeholder="Название карты" name="search_request">
 
                             </div>
                             <div class="form-group">
 
 
-                                <button type="submit" class="btn btn-primary" value="Search">Search</button>
+                                <button type="submit" class="btn btn-primary" value="Search">Поиск</button>
 
                             </div>
                             
@@ -53,7 +52,7 @@
 
                                 <form action="/logout">
                                     <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" >Logout</button>
+                                    <button type="submit" class="btn btn-primary" >Выйти</button>
                                     </div>
                                 </form>
 
@@ -68,7 +67,7 @@
 
                 </div>
             </div>
-            <div class="col-sm"></div>
+            <div class="col-md-4 col-sm-12"></div>
         </div>
 
     </div>

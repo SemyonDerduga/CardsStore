@@ -11,6 +11,7 @@ from aiohttp_security import SessionIdentityPolicy
 from aiohttp_security import setup as setup_security
 from authz import DictionaryAuthorizationPolicy
 import json
+import bcrypt
 
 async def create_app(config: dict):
     app = web.Application()
@@ -41,7 +42,7 @@ async def create_app(config: dict):
     return app
 
 def update_user(app, name, password, balance, cards):
-    app['db'].execute('set', 'User:'+name+':password', password)
+    app['db'].execute('set', 'User:'+name+':password', bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()))
     app['db'].execute('set', 'User:'+name+':balance', balance)
     app['db'].execute('set', 'User:'+name+':cards', json.dumps(cards))
     

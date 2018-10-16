@@ -41,7 +41,7 @@ async def login(request):
         response = web.HTTPFound('/search')
         return response
 
-    return {'message': 'Неправильныйая комбинация  \n  логина и пароля'}
+    return {'message': 'Неправильная комбинация  \n  логина и пароля'}
 
 @template('search.html')
 async def search_page(request):
@@ -88,7 +88,7 @@ async def card_view_page(request):
                 
                 buy = await asyncio.ensure_future(CardsGetter.buy_card(username = username, cardname = cardname))
                 if buy:
-                    message += 'Карта '+cardname+' куплена'
+                    message += 'Карта '+cardname+' куплена\n'
                 else:
                     message += 'На вашем счету недостаточно средств!'
                     cardname = 'notfound'
@@ -97,10 +97,10 @@ async def card_view_page(request):
         
         else:
             cardname = 'notfound'
-            message += 'Такой карты не существует'
+            message += 'Такой карты не существует\n'
         balance = await request.app['db'].execute('get', 'User:'+username+':balance')
         balance = int(balance.decode("utf-8"))
-        message += ' Balance: {balance}'.format(balance=balance)
+        message += ' Ваш счет: {balance}'.format(balance=balance)
         return {'message': message, 'path':'http://derdu.ga/cards/'+cardname.lower()+'.jpg', 'cardname':cardname}
     else:
         response = web.HTTPFound('/')
