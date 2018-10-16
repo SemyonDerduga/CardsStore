@@ -1,7 +1,7 @@
 # Default config file
 
-site_name: 'Cards Store'
+site_name: "Cards Store"
 database_uri: redis://localhost:6379
-path_images: '/home/semyon/Site/cards/'
+path_images: "/home/semyon/Site/cards/"
 request_coast: 50
-get_cards_url: 'http://derdu.ga/cards/'
+get_cards_url: "http://derdu.ga/cards/"

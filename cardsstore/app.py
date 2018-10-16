@@ -14,13 +14,13 @@ import json
 import bcrypt
 
 
-async def create_app(config: dict):
+async def create_app(config):
     app = web.Application()
 
-    app['config'] = config
+    app["config"] = config
     aiohttp_jinja2.setup(
         app,
-        loader=jinja2.PackageLoader('cardsstore', 'templates')
+        loader=jinja2.PackageLoader("cardsstore", "templates")
     )
     setup_routes(app)
 
@@ -28,12 +28,12 @@ async def create_app(config: dict):
     fernet_key = fernet.Fernet.generate_key()
     secret_key = base64.urlsafe_b64decode(fernet_key)
 
-    storage = EncryptedCookieStorage(secret_key, cookie_name='API_SESSION')
+    storage = EncryptedCookieStorage(secret_key, cookie_name="API_SESSION")
     setup_session(app, storage)
 
     policy = SessionIdentityPolicy()
-    app['db'] = await aioredis.create_pool(config['database_uri'])
-    setup_security(app, policy, DictionaryAuthorizationPolicy(app['db']))
+    app["db"] = await aioredis.create_pool(config["database_uri"])
+    setup_security(app, policy, DictionaryAuthorizationPolicy(app["db"]))
     app.on_startup.append(on_start)
 
     app.on_cleanup.append(on_shutdown)
@@ -42,17 +42,17 @@ async def create_app(config: dict):
 
 
 def update_user(app, name, password, balance, cards):
-    app['db'].execute('set', 'User:'+name+':password',
-                      bcrypt.hashpw(password.encode('utf-8'),
+    app["db"].execute("set", "User:"+name+":password",
+                      bcrypt.hashpw(password.encode("utf-8"),
                                     bcrypt.gensalt()))
-    app['db'].execute('set', 'User:'+name+':balance', balance)
-    app['db'].execute('set', 'User:'+name+':cards', json.dumps(cards))
+    app["db"].execute("set", "User:"+name+":balance", balance)
+    app["db"].execute("set", "User:"+name+":cards", json.dumps(cards))
 
 
 async def on_start(app):
-    update_user(app, 'Test', 'Test', 300, [])
+    update_user(app, "Test", "Test", 300, [])
     pass
 
 
 async def on_shutdown(app):
-    await app['db'].close()
+    await app["db"].close()
