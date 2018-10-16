@@ -1,16 +1,17 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" type="text/css" href="http://derdu.ga/index.css">
+
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="http://derdu.ga/index.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Магазин Карт</title>
     <style>
         img { 
-        width: 100%; 
-    }
+            width: 100%; 
+        }
     </style>
 </head>
 
@@ -29,7 +30,7 @@
                     <div class="main-div">
                         <div class="panel">
                             <h2>{{cardname}}</h2>
-                            <img src="{{path}}" alt="Italian Trulli">
+                            <img src="{{path}}" >
                             <p>Введите название карты</p>
                         </div>
                         <form id="Search" action="/card" method="get">
@@ -48,7 +49,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-12"></div>
         </div>
     </div>
 </body>
