@@ -21,10 +21,10 @@
                 <h1 class="form-heading">
 
                     {% for line in message.splitlines() %}
-    {{line}}<br>
-{% endfor %}
+                    {{line}}<br>
+                    {% endfor %}
 
-</h1>
+                </h1>
             </div>
             <div class="col-md-4 col-sm-12">
                 <div class="login-form">
@@ -47,22 +47,22 @@
                                 <button type="submit" class="btn btn-primary" value="Search">Поиск</button>
 
                             </div>
-                            
-                                </form>
 
-                                <form action="/logout">
-                                    <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" >Выйти</button>
-                                    </div>
-                                </form>
+                        </form>
 
-                                    
-                                        
-                                    
-                                
-                            
+                        <form action="/logout">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Выйти</button>
+                            </div>
+                        </form>
 
-                        
+
+
+
+
+
+
+
                     </div>
 
                 </div>

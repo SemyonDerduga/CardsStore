@@ -1,4 +1,6 @@
 from .views import frontend
+
+
 def setup_routes(app):
     router = app.router
     router.add_get('/', frontend.index, name='index')

@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+This module launch the application and
+accepts the parameters of the command line.
+"""
+
 import asyncio
 import aiohttp
 import argparse
