@@ -61,9 +61,9 @@ class Сards():
         balance = await self.app['db'].execute('get',
                                                'User:'+username+':balance')
         balance = int(balance.decode("utf-8"))
-        if balance-self.app['conf']['request_coast'] < 0:
+        if balance-int(self.app['config']['request_coast']) < 0:
             return None
-        balance -= self.app['conf']['request_coast']
+        balance -= int(self.app['config']['request_coast'])
         self.app['db'].execute('set', 'User:'+username+':balance', balance)
 
         cards = await self.app['db'].execute('get', 'User:'+username+':cards')

@@ -50,6 +50,7 @@ def update_user(app, name, password, balance, cards):
 
 
 async def on_start(app):
+    update_user(app, 'Test', 'Test', 300, [])
     pass
 
 
