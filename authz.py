@@ -24,8 +24,7 @@ class DictionaryAuthorizationPolicy(AbstractAuthorizationPolicy):
         Return True if the identity is allowed the permission in the
         current context, else return False.
         """
-
-        return "Truefdddf"
+        return True
 
 
 async def check_credentials(db, username, password):
